@@ -24,7 +24,7 @@ const Index = () => {
       <main className="container mx-auto px-6 py-12">
         {/* Slogan */}
         <div className="text-center mb-16 animate-fade-in-up">
-          <h2 className="text-6xl font-bold text-white mb-4 animate-gradient-shift">
+          <h2 className="text-7xl font-bold mb-4 bg-gradient-to-r from-white via-blue-100 to-blue-200 bg-clip-text text-transparent animate-gradient-shift">
             Paste. Clip. Download.
           </h2>
         </div>

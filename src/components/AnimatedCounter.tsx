@@ -23,19 +23,33 @@ export const AnimatedCounter: React.FC<AnimatedCounterProps> = ({
   useEffect(() => {
     const start = countDown ? (startFrom || target * 2) : 0;
     const end = target;
-    const increment = countDown ? -1 : 1;
-    const steps = Math.abs(end - start);
-    const stepDuration = duration / steps;
+    const totalSteps = countDown ? 50 : Math.abs(end - start); // More steps for smoother countdown
+    const stepDuration = duration / totalSteps;
 
-    let current = start;
+    let stepCount = 0;
     const timer = setInterval(() => {
-      current += increment * (Math.abs(end - start) / steps);
+      stepCount++;
       
-      if (countDown ? current <= end : current >= end) {
-        setCount(end);
-        clearInterval(timer);
+      if (countDown) {
+        const progress = stepCount / totalSteps;
+        const currentValue = start - (start - end) * progress;
+        
+        if (stepCount >= totalSteps) {
+          setCount(end);
+          clearInterval(timer);
+        } else {
+          setCount(Math.round(currentValue * 10) / 10);
+        }
       } else {
-        setCount(Math.round(current * 10) / 10);
+        const increment = (end - start) / totalSteps;
+        const currentValue = start + increment * stepCount;
+        
+        if (stepCount >= totalSteps) {
+          setCount(end);
+          clearInterval(timer);
+        } else {
+          setCount(Math.round(currentValue));
+        }
       }
     }, stepDuration);
 
