@@ -1,15 +1,26 @@
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
+interface ClipHistory {
+  id: string;
+  videoTitle: string;
+  videoId: string;
+  startTime: number;
+  endTime: number;
+  format: string;
+  date: string;
+}
+
 interface User {
   username: string;
   email: string;
+  history: ClipHistory[];
 }
 
 interface AuthContextType {
   isAuthenticated: boolean;
   user: User | null;
-  login: () => void;
+  login: (username: string, password: string) => Promise<boolean>;
   logout: () => void;
   signup: (username: string, email: string) => Promise<boolean>;
   getValidationErrors: (username: string, email: string) => string[];
@@ -26,9 +37,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<User | null>(null);
 
-  const login = () => {
-    setIsAuthenticated(true);
-    setUser({ username: 'demo_user', email: 'demo@example.com' });
+  const login = async (username: string, password: string): Promise<boolean> => {
+    // Simulate login validation
+    if (username && password) {
+      setIsAuthenticated(true);
+      setUser({ 
+        username, 
+        email: 'demo@example.com',
+        history: []
+      });
+      return true;
+    }
+    return false;
   };
 
   const logout = () => {
@@ -40,7 +60,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     // Simulate signup process
     if (username && email) {
       setIsAuthenticated(true);
-      setUser({ username, email });
+      setUser({ username, email, history: [] });
       return true;
     }
     return false;
